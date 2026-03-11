@@ -1,0 +1,32 @@
+@startuml
+' Definição dos atores
+:Usuário:
+:Cliente:
+:Prestador de Serviço: AS Prestador
+
+' Definição das extensões
+Usuário <|-- Cliente
+Usuário <|-- Prestador
+
+' Definição dos casos de uso
+rectangle "Sistema" {
+    (Autenticar-se no sistema) AS (Auth)
+
+    (Filtrar prestadores por tipo de serviço) AS (ClienteUC1)
+    (Publicar necessidade de profissional) AS (ClienteUC2)
+
+    (Adicionar sua formação técnica e profissional) AS (PrestadorUC1)
+    (Aceitar propostas de trabalho) AS (PrestadorUC2)
+    (Propor orçamento ao cliente) AS (PrestadorUC3)
+}
+
+' Definição dos relacionamentos
+Usuário -- Auth
+
+Cliente -- ClienteUC1
+Cliente -- ClienteUC2
+
+Prestador -- PrestadorUC1
+Prestador -- PrestadorUC2
+Prestador -- PrestadorUC3
+@enduml

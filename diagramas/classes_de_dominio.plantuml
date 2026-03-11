@@ -1,0 +1,17 @@
+@startuml
+hide empty members
+
+' Definição das classes
+class Usuario
+class Cliente
+class Prestador
+
+class Servico
+
+' Definição dos relacionamentos
+Usuario <|-- Cliente
+Usuario <|-- Prestador
+
+Cliente "1" -- "0..*" Servico : "Contrata"
+Prestador "1" -- "0..*" Servico : "Realiza"
+@enduml
