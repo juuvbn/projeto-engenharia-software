@@ -1,0 +1,12 @@
+@startuml
+
+actor Cliente
+participant "Sistema" as S
+participant "Base de Dados" as DB
+
+Cliente -> S: 1. FiltrarEspecificaçõesDeServiço()
+S -> DB: 1.1 ConsultarPrestadoresPorFiltro()
+DB --> S: RetornarListaDePrestadores()
+S --> Cliente: 1.2 ExibirListaDePrestadores()
+
+@enduml
