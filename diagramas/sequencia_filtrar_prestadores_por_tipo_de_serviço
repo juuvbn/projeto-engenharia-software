@@ -6,7 +6,12 @@ participant "Base de Dados" as DB
 
 Cliente -> S: 1. FiltrarEspecificaçõesDeServiço()
 S -> DB: 1.1 ConsultarPrestadoresPorFiltro()
-DB --> S: RetornarListaDePrestadores()
-S --> Cliente: 1.2 ExibirListaDePrestadores()
+DB --> S: RetornarListaFiltradaDePrestadores()
+
+alt Lista filtrada não vazia
+    S --> Cliente: 1.2 ExibirListaDePrestadores()
+else Lista filtrada vazia
+    S --> Cliente: SolicitarNovoGrupoDeFiltro()
+end
 
 @enduml
