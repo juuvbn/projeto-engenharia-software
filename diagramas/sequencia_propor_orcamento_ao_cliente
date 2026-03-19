@@ -1,0 +1,44 @@
+@startuml
+
+actor "Prestador de Serviço" as Prestador
+actor Cliente
+participant "Sistema" as S
+participant "Base de Dados" as DB
+
+S -> DB: 1. verificarStatusProposta()
+DB --> S: RetornarStatusDaProposta()
+
+alt Proposta aceita
+    S --> Prestador: SolicitarEnvioDeOrçamento()
+end
+
+Prestador -> S: 2. EnviarOrcamento()
+S -> DB: 2.1 RegistrarOrcamento()
+DB --> S: RetornarOrçamentRegistrado()
+S --> Cliente: EnviarOrcamentoProposto()
+
+alt Usuário aceita
+    Cliente -> S: AceitarOrcamento()
+    S --> Prestador: RetornarAceiteDeOrcamento()
+else Usuário recusa
+    Cliente -> S: RecusarOrcamento()
+    S --> Prestador: RetornarRecusaDeOrcamento()
+
+    alt Usuário quer negociar
+        loop Negociação de contraproposta
+            Cliente -> S: EnviarContraproposta()
+            S -> Prestador: RetornarContraproposta()
+            Prestador -> S: ResponderContraproposta()
+            S -> Cliente: RetornarRespostaDoPrestador()
+        end
+        alt Negociação finalizada com acordo
+            S --> Prestador: RetornarAceiteDeNegociacao()
+        else Negociação encerrada sem acordo
+            S --> Prestador: RetornarRecusaDeNegociacao()
+        end
+    else Usuário não deseja negociar
+        S --> Prestador: RetornarRecusaDeNegociacao()
+    end
+end
+
+@enduml
