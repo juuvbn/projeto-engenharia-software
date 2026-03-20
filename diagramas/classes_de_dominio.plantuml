@@ -2,11 +2,23 @@
 hide empty members
 
 ' Definição das classes
-class Usuario
-class Cliente
-class Prestador
+class Usuario {
+    # nome: String
+    # telefone: String
+    # email: String
+}
 
-class Servico
+class Cliente {
+    - endereco: String
+}
+class Prestador {
+    - especialidades: List<String>
+}
+
+class Servico {
+    - descricao: String
+    - dataDeAgendamento: Datetime
+}
 
 ' Definição dos relacionamentos
 Usuario <|-- Cliente
