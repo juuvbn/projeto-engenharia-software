@@ -1,8 +1,7 @@
 @startuml
-
 actor "Prestador de Serviço" as Prestador
 participant "Sistema" as S
-participant "Base de Dados" as DB
+database "Base de Dados" as DB
 
 Prestador -> S: 1. VisualizarPropostas()
 S -> DB: 1.1 ConsultarPropostas()
@@ -18,5 +17,4 @@ Prestador -> S: 2. RecusarProposta()
 S -> DB: 2.1 AtualizarStatusProposta()
 DB --> S: RetornarPropostaRecusada()
 S --> Prestador: 2.2 ConfirmarRecusa()
-
 @enduml

@@ -1,9 +1,8 @@
 @startuml
-
 actor "Prestador de Serviço" as Prestador
 actor Cliente
 participant "Sistema" as S
-participant "Base de Dados" as DB
+database "Base de Dados" as DB
 
 S -> DB: 1. verificarStatusProposta()
 DB --> S: RetornarStatusDaProposta()
@@ -40,5 +39,4 @@ else Usuário recusa
         S --> Prestador: RetornarRecusaDeNegociacao()
     end
 end
-
 @enduml

@@ -1,8 +1,7 @@
 @startuml
-
 actor Cliente
 participant "Sistema" as S
-participant "Base de Dados" as DB
+database "Base de Dados" as DB
 
 Cliente -> S: 1. FiltrarEspecificaçõesDeServiço()
 S -> DB: 1.1 ConsultarPrestadoresPorFiltro()
@@ -13,5 +12,4 @@ alt Lista filtrada não vazia
 else Lista filtrada vazia
     S --> Cliente: SolicitarNovoGrupoDeFiltro()
 end
-
 @enduml
