@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: cuidarplus
+  datasource:
+    url: jdbc:mysql://localhost:3306/cuidarplus
+    username: root
+    password: dev
+  jpa:
+    hibernate:
+      ddl-auto: update
