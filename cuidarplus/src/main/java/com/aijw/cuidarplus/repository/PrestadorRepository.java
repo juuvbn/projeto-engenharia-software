@@ -23,4 +23,10 @@ public interface PrestadorRepository extends JpaRepository<Prestador, Long> {
             @Param("especialidades") Set<Especialidade.EspecialidadeEnum> especialidades,
             Pageable pageable
     );
+
+    boolean existsByIdNotAndTelefoneOrEmailIgnoreCase(
+            Long id,
+            String telefone,
+            String email
+    );
 }

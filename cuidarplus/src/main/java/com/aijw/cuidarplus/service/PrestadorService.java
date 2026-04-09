@@ -9,7 +9,6 @@ import com.aijw.cuidarplus.repository.EspecialidadesRepository;
 import com.aijw.cuidarplus.repository.PrestadorRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jspecify.annotations.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -47,6 +46,7 @@ public class PrestadorService {
 
     private Prestador criarPrestador(PrestadorCreateDTO prestadorCreateDTO) {
         Prestador prestador = prestadorMapper.map(prestadorCreateDTO);
+        validarUnicidadeDeCampos(prestador);
 
         List<Especialidade> especialidades = extrairEspecialidades(prestadorCreateDTO, prestador);
         prestador.setEspecialidades(especialidades);
@@ -54,7 +54,7 @@ public class PrestadorService {
         return prestador;
     }
 
-    private static List<Especialidade> extrairEspecialidades(PrestadorCreateDTO prestadorCreateDTO, Prestador prestador) {
+    private List<Especialidade> extrairEspecialidades(PrestadorCreateDTO prestadorCreateDTO, Prestador prestador) {
         List<Especialidade> especialidades = new ArrayList<>();
 
         for (Especialidade.EspecialidadeEnum especialidadeEnum: prestadorCreateDTO.getEspecialidades()) {
@@ -65,5 +65,15 @@ public class PrestadorService {
         }
 
         return especialidades;
+    }
+
+    private void validarUnicidadeDeCampos(Prestador prestador) {
+        if (prestadorRepository.existsByIdNotAndTelefoneOrEmailIgnoreCase(
+                prestador.getId(),
+                prestador.getTelefone(),
+                prestador.getEmail()
+        )) {
+            throw new IllegalArgumentException("Já existe um prestador com o mesmo telefone e/ou email");
+        }
     }
 }
