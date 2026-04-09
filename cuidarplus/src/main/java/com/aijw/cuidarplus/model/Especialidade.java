@@ -3,6 +3,7 @@ package com.aijw.cuidarplus.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -13,6 +14,7 @@ import lombok.Setter;
                 name = "uq_especialides_prestador_id", columnNames = {"prestador_id", "especialidade"}
         )
 )
+@ToString(of = { "id", "especialidade" })
 public class Especialidade {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
