@@ -3,6 +3,7 @@ package com.aijw.cuidarplus.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "prestadores")
+@ToString(of = { "id", "nome", "email" })
 public class Prestador {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
