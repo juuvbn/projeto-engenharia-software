@@ -23,12 +23,17 @@ Estrutura conceitual das entidades de negócio e seus relacionamentos:
 
 ![Diagrama de classes de domínio](/out/diagramas/classes_de_dominio/classes_de_dominio.svg)
 
-## :hammer_and_wrench: Tecnologias
+## 🛠️ Tecnologias
 
-* **Frontend:** A definir
-* **Backend:** A definir
-* **Banco de Dados:** A definir
-* **Modelagem:** PlantUML
+**Arquitetura:** Monolítica
+
+**Frontend:** React
+
+**Backend:** Java e Spring Boot
+
+**Banco de Dados:** MySQL
+
+**Modelagem:** PlantUML
 
 ## 🚀 CI/CD Pipeline
 
