@@ -30,3 +30,4 @@ Estrutura conceitual das entidades de negócio e seus relacionamentos:
 * **Banco de Dados:** A definir
 * **Modelagem:** PlantUML
 
+
