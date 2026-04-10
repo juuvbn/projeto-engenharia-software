@@ -29,3 +29,4 @@ Estrutura conceitual das entidades de negócio e seus relacionamentos:
 * **Backend:** A definir
 * **Banco de Dados:** A definir
 * **Modelagem:** PlantUML
+
