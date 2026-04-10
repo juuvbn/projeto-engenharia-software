@@ -4,6 +4,7 @@ import com.aijw.cuidarplus.dto.prestador.PrestadorCreateDTO;
 import com.aijw.cuidarplus.dto.prestador.PrestadorDTO;
 import com.aijw.cuidarplus.model.Especialidade;
 import com.aijw.cuidarplus.service.PrestadorService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/prestadores")
 @RequiredArgsConstructor
+@Tag(name = "Prestadores", description = "Endpoints para gerenciamento de prestadores de serviços de saúde")
 public class PrestadorController {
     private final PrestadorService prestadorService;
 
