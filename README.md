@@ -29,3 +29,15 @@ Estrutura conceitual das entidades de negócio e seus relacionamentos:
 * **Backend:** A definir
 * **Banco de Dados:** A definir
 * **Modelagem:** PlantUML
+
+## 🚀 CI/CD Pipeline
+
+Este projeto utiliza uma esteira de integração contínua (CI/CD) para automatizar o processo de build e testes.
+
+### 🔧 Tecnologias utilizadas
+
+- ☁️ AWS (EC2) — hospedagem do servidor Jenkins  
+- ⚙️ Jenkins — automação da pipeline  
+- 📦 Maven — build e gerenciamento de dependências  
+- 🐙 GitHub — controle de versão e gatilho via webhook  
+
