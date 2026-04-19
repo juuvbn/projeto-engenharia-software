@@ -2,16 +2,42 @@ import { Link } from 'react-router-dom'
 
 function Navbar() {
   return (
-    <nav className="bg-blue-600 text-white px-6 py-4 flex justify-between items-center">
-      <h1 className="text-xl font-bold">Cuidar+</h1>
+    <header className="w-full border-b border-gray-200 bg-white">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-8">
+        <Link to="/" className="flex items-center gap-3">
+          <span className="text-4xl leading-none text-blue-600">♡</span>
+          <span className="text-2xl font-bold text-blue-600">Cuidar+</span>
+        </Link>
 
-      <div className="space-x-4">
-        <Link to="/" className="hover:underline">Home</Link>
-        <Link to="/sobre" className="hover:underline">Sobre</Link>
-        <Link to="/login" className="hover:underline">Login</Link>
-        <Link to="/cadastro" className="hover:underline">Cadastro</Link>
+        <nav className="hidden items-center gap-10 md:flex">
+          <Link to="/" className="font-semibold text-blue-600">
+            Início
+          </Link>
+          <Link to="/buscar-servico" className="text-gray-500 hover:text-gray-800">
+            Buscar
+          </Link>
+          <Link to="/sobre" className="text-gray-500 hover:text-gray-800">
+            Sobre
+          </Link>
+        </nav>
+
+        <div className="flex items-center gap-4">
+          <Link
+            to="/login"
+            className="rounded-2xl border border-blue-600 px-8 py-3 font-medium text-blue-600 transition hover:bg-blue-50"
+          >
+            Entrar
+          </Link>
+
+          <Link
+            to="/cadastro"
+            className="rounded-2xl bg-blue-600 px-8 py-3 font-semibold text-white transition hover:bg-blue-700"
+          >
+            Cadastrar
+          </Link>
+        </div>
       </div>
-    </nav>
+    </header>
   )
 }
 
