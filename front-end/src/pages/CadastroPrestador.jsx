@@ -82,7 +82,6 @@ function CadastroPrestador() {
                 {[
                   'Babá',
                   'Cuidador de idosos',
-                  'Cuidador infantil',
                   'Pets',
                   'Plantas',
                   'Serviços domésticos'
