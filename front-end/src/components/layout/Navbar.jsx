@@ -16,6 +16,9 @@ function Navbar() {
           <Link to="/buscar-servico" className="text-gray-500 hover:text-gray-800">
             Buscar
           </Link>
+          <Link to="/meus-servicos" className="text-gray-500 hover:text-gray-800">
+            Meus Serviços
+          </Link>
           <Link to="/sobre" className="text-gray-500 hover:text-gray-800">
             Sobre
           </Link>
@@ -28,7 +31,6 @@ function Navbar() {
           >
             Entrar
           </Link>
-
           <Link
             to="/cadastro"
             className="rounded-2xl bg-blue-600 px-8 py-3 font-semibold text-white transition hover:bg-blue-700"
