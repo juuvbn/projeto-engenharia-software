@@ -4,11 +4,15 @@ import com.aijw.cuidarplus.dto.auth.PasswordChangeRequestDTO;
 import com.aijw.cuidarplus.dto.prestador.PrestadorCreateDTO;
 import com.aijw.cuidarplus.dto.prestador.PrestadorDTO;
 import com.aijw.cuidarplus.dto.prestador.PrestadorUpdateDTO;
+import com.aijw.cuidarplus.dto.servico.ServicoDTO;
 import com.aijw.cuidarplus.mapper.PrestadorMapper;
+import com.aijw.cuidarplus.mapper.ServicoMapper;
 import com.aijw.cuidarplus.model.Especialidade;
 import com.aijw.cuidarplus.model.Prestador;
+import com.aijw.cuidarplus.model.Servico;
 import com.aijw.cuidarplus.repository.EspecialidadesRepository;
 import com.aijw.cuidarplus.repository.PrestadorRepository;
+import com.aijw.cuidarplus.repository.ServicoRepository;
 import com.aijw.cuidarplus.security.AuthenticatedUserPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,8 +32,11 @@ import java.util.Set;
 public class PrestadorService {
     private final PrestadorRepository prestadorRepository;
     private final EspecialidadesRepository especialidadesRepository;
+    private final ServicoRepository servicoRepository;
 
     private final PrestadorMapper prestadorMapper;
+    private final ServicoMapper servicoMapper;
+
     private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly=true)
@@ -70,6 +77,17 @@ public class PrestadorService {
         prestador.setSenha(passwordEncoder.encode(request.getNovaSenha()));
         prestadorRepository.saveAndFlush(prestador);
         log.info("Senha do prestador {} atualizada com sucesso", prestador);
+    }
+
+    public Page<ServicoDTO> listarServicosDoPrestador(
+            AuthenticatedUserPrincipal principal,
+            String busca,
+            Set<Servico.StatusServico> statusSet,
+            Pageable pageable
+    ) {
+        var prestador = buscarPrestadorPorIdOuFalhar(principal.getId());
+
+        return servicoRepository.buscarServicosPorFiltro(prestador, busca, statusSet, pageable).map(servicoMapper::map);
     }
 
     private void validarSenha(PasswordChangeRequestDTO request, Prestador prestador) {

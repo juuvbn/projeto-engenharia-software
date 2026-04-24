@@ -25,6 +25,7 @@ function AppRoutes() {
       <Route path="/recuperar-senha" element={<RecuperarSenha />} />
       <Route path="/buscar-servico" element={<BuscarServico />} />
       <Route path="/selecionar-profissional" element={<SelecionarProfissional />} />
+      <Route path="/selecionar-profissional/:prestadorId" element={<SelecionarProfissional />} />
       <Route path="/confirmacao" element={<ConfirmacaoSelecao />} />
       <Route path="/sem-resultado" element={<SemResultado />} />
       <Route path="/cadastro-cliente" element={<CadastroCliente />} />

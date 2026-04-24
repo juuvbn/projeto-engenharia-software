@@ -3,14 +3,17 @@ package com.aijw.cuidarplus.controller;
 import com.aijw.cuidarplus.dto.auth.PasswordChangeRequestDTO;
 import com.aijw.cuidarplus.dto.prestador.PrestadorDTO;
 import com.aijw.cuidarplus.dto.prestador.PrestadorUpdateDTO;
+import com.aijw.cuidarplus.dto.servico.ServicoDTO;
 import com.aijw.cuidarplus.model.Especialidade;
+import com.aijw.cuidarplus.model.Servico;
 import com.aijw.cuidarplus.security.AuthenticatedUserPrincipal;
 import com.aijw.cuidarplus.service.PrestadorService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.security.PermitAll;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -60,5 +63,16 @@ public class PrestadorController {
         prestadorService.alterarSenha(principal, request);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/me/servicos")
+    @PreAuthorize("hasRole('PRESTADOR')")
+    public ResponseEntity<Page<ServicoDTO>> listarServicosDoPrestador(
+            @AuthenticationPrincipal AuthenticatedUserPrincipal principal,
+            @RequestParam(required = false) String busca,
+            @RequestParam(name = "status", required = false) Set<Servico.StatusServico> statusSet,
+            @PageableDefault(sort = { "dataHorario", "status" }, direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(prestadorService.listarServicosDoPrestador(principal, busca, statusSet, pageable));
     }
 }

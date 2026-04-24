@@ -1,22 +1,26 @@
 import { useEffect, useState } from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { loginCliente, loginPrestador } from '../services/authService'
 
 function Login() {
   const navigate = useNavigate()
+  const location = useLocation()
   const { isAuthenticated, login } = useAuth()
   const [tipoUsuario, setTipoUsuario] = useState('CLIENTE')
   const [form, setForm] = useState({ email: '', senha: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  const redirectTo = location.state?.returnTo || '/perfil'
+  const redirectState = location.state?.prestador ? { prestador: location.state.prestador } : undefined
+
   useEffect(() => {
     setError('')
   }, [tipoUsuario])
 
   if (isAuthenticated) {
-    return <Navigate to="/perfil" replace />
+    return <Navigate to={redirectTo} state={redirectState} replace />
   }
 
   function handleChange(event) {
@@ -36,7 +40,7 @@ function Login() {
           : await loginCliente(form)
 
       login(response)
-      navigate('/perfil')
+      navigate(redirectTo, { state: redirectState, replace: true })
     } catch (err) {
       setError(err.message || 'Não foi possível fazer login.')
     } finally {

@@ -6,7 +6,10 @@ import com.aijw.cuidarplus.model.Servico;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(
+        componentModel = "spring",
+        uses = MaterialServicoMapper.class
+)
 public interface ServicoMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "contratante", ignore = true)

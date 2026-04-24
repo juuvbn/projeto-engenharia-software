@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,4 +26,6 @@ public class ServicoDTO {
     private BigDecimal valor;
 
     private Servico.StatusServico status;
+
+    private List<MaterialServicoDTO> materiais;
 }
