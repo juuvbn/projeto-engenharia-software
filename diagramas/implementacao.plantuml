@@ -1,0 +1,37 @@
+@startuml
+skinparam packageStyle rect
+skinparam shadowing false
+
+actor "Usuário" as User
+node "Navegador" as Browser {
+  [React (Front-end)] as React
+}
+
+node "AWS" as AWS {
+  node "S3 + CloudFront" as FEHost
+  node "EC2 / ECS" as BEHost
+  database "RDS MySQL" as DB
+}
+
+User --> Browser : Acessa a aplicação
+Browser --> FEHost : Carrega arquivos estáticos do React
+Browser --> BEHost : Requisições REST/HTTPS
+FEHost --> Browser : Entrega o SPA React
+BEHost --> DB : Lê/Grava dados com MySQL
+BEHost --> FEHost : Deve estar disponível para o front-end
+
+note right of FEHost
+Hospedagem do front-end React
+no AWS S3 + CloudFront
+end note
+
+note right of BEHost
+Aplicação back-end Spring Boot
+executando em EC2, ECS ou similar
+end note
+
+note right of DB
+Base de dados relacional MySQL
+pode ser um RDS gerenciado
+end note
+@enduml
