@@ -10,6 +10,7 @@ import ConfirmacaoSelecao from '../pages/ConfirmacaoSelecao'
 import SemResultado from '../pages/SemResultado'
 import CadastroCliente from '../pages/CadastroCliente'
 import CadastroPrestador from '../pages/CadastroPrestador'
+import MeusServicos from '../pages/MeusServicos'
 
 function AppRoutes() {
   return (
@@ -25,6 +26,7 @@ function AppRoutes() {
       <Route path="/sem-resultado" element={<SemResultado />} />
       <Route path="/cadastro-cliente" element={<CadastroCliente />} />
       <Route path="/cadastro-prestador" element={<CadastroPrestador />} />
+      <Route path="/meus-servicos" element={<MeusServicos />} />
     </Routes>
   )
 }
