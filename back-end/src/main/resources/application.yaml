@@ -12,3 +12,11 @@ spring:
     default-property-inclusion: non_null
     mapper:
       sort-properties-alphabetically: false
+
+security:
+  jwt:
+    issuer: cuidarplus
+    # Base64 de uma chave simétrica com pelo menos 256 bits.
+    secret: ${JWT_SECRET:Y3VpZGFycGx1cy1qd3Qtc2VjcmV0LWtleS0zMi1ieXRlcw==}
+    expiration: ${JWT_EXPIRATION_MS:86400000}
+

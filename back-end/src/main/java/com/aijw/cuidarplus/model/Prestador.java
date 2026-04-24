@@ -1,5 +1,6 @@
 package com.aijw.cuidarplus.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +12,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "prestadores")
-@ToString(of = { "id", "nome", "email" })
+@ToString(of = { "id", "nome", "email", "tipoUsuario" })
 public class Prestador {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
@@ -28,4 +29,12 @@ public class Prestador {
 
     @OneToMany(mappedBy = "prestador", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Especialidade> especialidades;
+
+    @JsonIgnore
+    @Column(nullable = false)
+    private String senha;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoUsuario tipoUsuario;
 }

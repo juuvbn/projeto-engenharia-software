@@ -10,9 +10,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Set;
+import java.util.Optional;
 
 @Repository
 public interface PrestadorRepository extends JpaRepository<Prestador, Long> {
+    Optional<Prestador> findByEmailIgnoreCase(String email);
+
+    boolean existsByEmailIgnoreCase(String email);
+
+    boolean existsByTelefoneIgnoreCase(String telefone);
+
     @Query("""
     SELECT p
     FROM Prestador p
