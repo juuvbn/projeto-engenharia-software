@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 
 function Navbar() {
+  const userType = 'cliente'; //simulado enquanto aguardamos endpoint do back-end
+  
   return (
     <header className="w-full border-b border-gray-200 bg-white">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-8">
@@ -16,9 +18,14 @@ function Navbar() {
           <Link to="/buscar-servico" className="text-gray-500 hover:text-gray-800">
             Buscar
           </Link>
-          <Link to="/meus-servicos" className="text-gray-500 hover:text-gray-800">
-            Meus Serviços
-          </Link>
+          <Link 
+            to="/meus-servicos" 
+            className={`font-medium transition-colors ${
+              !userType 
+                ? "text-gray-300 cursor-not-allowed pointer-events-none" // Desabilitado
+                : "text-gray-500 hover:text-gray-800" // Ativo
+            }`}
+          >
           <Link to="/sobre" className="text-gray-500 hover:text-gray-800">
             Sobre
           </Link>
