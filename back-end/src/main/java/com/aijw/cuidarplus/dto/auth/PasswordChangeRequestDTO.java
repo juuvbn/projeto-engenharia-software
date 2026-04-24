@@ -8,15 +8,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PasswordChangeRequestDTO {
-    @Schema(example = "senhaNova123")
-    @NotBlank(message = "A nova senha é obrigatória")
-    private String novaSenha;
-
     @Schema(example = "senhaAntiga123")
     @NotBlank(message = "A senha atual é obrigatória")
     private String senhaAtual;
 
-    @Schema(example = "senhaAntiga123")
-    @NotBlank(message = "A confirmação da antiga atual é obrigatória")
-    private String confirmacaoSenhaAtual;
+    @Schema(example = "senhaNova123")
+    @NotBlank(message = "A nova senha é obrigatória")
+    private String novaSenha;
+
+    @Schema(example = "senhaNova123")
+    @NotBlank(message = "A confirmação da nova senha é obrigatória")
+    private String confirmacaoNovaSenha;
 }

@@ -20,6 +20,14 @@ import org.springframework.web.bind.annotation.*;
 public class ClienteController {
     private final ClienteService clienteService;
 
+    @GetMapping("/me")
+    @PreAuthorize("hasRole('CLIENTE')")
+    public ResponseEntity<ClienteDTO> buscarPerfilAutenticado(
+            @AuthenticationPrincipal AuthenticatedUserPrincipal principal
+    ) {
+        return ResponseEntity.ok(clienteService.buscarPerfilAutenticado(principal));
+    }
+
     @PutMapping("/me")
     @PreAuthorize("hasRole('CLIENTE')")
     public ResponseEntity<ClienteDTO> atualizarCliente(

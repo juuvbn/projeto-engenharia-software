@@ -11,6 +11,9 @@ import SemResultado from '../pages/SemResultado'
 import CadastroCliente from '../pages/CadastroCliente'
 import CadastroPrestador from '../pages/CadastroPrestador'
 import MeusServicos from '../pages/MeusServicos'
+import Perfil from '../pages/Perfil'
+import EditarPerfil from '../pages/EditarPerfil'
+import AlterarSenha from '../pages/AlterarSenha'
 
 function AppRoutes() {
   return (
@@ -27,6 +30,9 @@ function AppRoutes() {
       <Route path="/cadastro-cliente" element={<CadastroCliente />} />
       <Route path="/cadastro-prestador" element={<CadastroPrestador />} />
       <Route path="/meus-servicos" element={<MeusServicos />} />
+      <Route path="/perfil" element={<Perfil />} />
+      <Route path="/perfil/editar" element={<EditarPerfil />} />
+      <Route path="/perfil/senha" element={<AlterarSenha />} />
     </Routes>
   )
 }

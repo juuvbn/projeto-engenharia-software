@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom'
+import UserMenu from './UserMenu'
+import { useAuth } from '../../context/AuthContext'
 
 function Navbar() {
+  const { isAuthenticated } = useAuth()
+
   return (
     <header className="w-full border-b border-gray-200 bg-white">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-8">
@@ -25,18 +29,24 @@ function Navbar() {
         </nav>
 
         <div className="flex items-center gap-4">
-          <Link
-            to="/login"
-            className="rounded-2xl border border-blue-600 px-8 py-3 font-medium text-blue-600 transition hover:bg-blue-50"
-          >
-            Entrar
-          </Link>
-          <Link
-            to="/cadastro"
-            className="rounded-2xl bg-blue-600 px-8 py-3 font-semibold text-white transition hover:bg-blue-700"
-          >
-            Cadastrar
-          </Link>
+          {isAuthenticated ? (
+            <UserMenu />
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="rounded-2xl border border-blue-600 px-8 py-3 font-medium text-blue-600 transition hover:bg-blue-50"
+              >
+                Entrar
+              </Link>
+              <Link
+                to="/cadastro"
+                className="rounded-2xl bg-blue-600 px-8 py-3 font-semibold text-white transition hover:bg-blue-700"
+              >
+                Cadastrar
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </header>

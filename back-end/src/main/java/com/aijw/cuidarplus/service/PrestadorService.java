@@ -1,5 +1,6 @@
 package com.aijw.cuidarplus.service;
 
+import com.aijw.cuidarplus.dto.auth.PasswordChangeRequestDTO;
 import com.aijw.cuidarplus.dto.prestador.PrestadorCreateDTO;
 import com.aijw.cuidarplus.dto.prestador.PrestadorDTO;
 import com.aijw.cuidarplus.dto.prestador.PrestadorUpdateDTO;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,12 +30,19 @@ public class PrestadorService {
     private final EspecialidadesRepository especialidadesRepository;
 
     private final PrestadorMapper prestadorMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly=true)
     public Page<PrestadorDTO> buscarPrestadores(Set<Especialidade.EspecialidadeEnum> especialidades, Pageable pageable) {
         var prestadores = prestadorRepository.buscarPrestadoresPorFiltro(especialidades, pageable);
 
         return prestadores.map(prestadorMapper::map);
+    }
+
+    @Transactional(readOnly = true)
+    public PrestadorDTO buscarPerfilAutenticado(AuthenticatedUserPrincipal principal) {
+        Prestador prestador = buscarPrestadorPorIdOuFalhar(principal.getId());
+        return prestadorMapper.map(prestador);
     }
 
     @Transactional
@@ -49,6 +58,39 @@ public class PrestadorService {
         log.info("Prestador {} atualizado com sucesso", saved);
 
         return prestadorMapper.map(saved);
+    }
+
+
+    public void alterarSenha(AuthenticatedUserPrincipal principal, PasswordChangeRequestDTO request) {
+        preValidarSenhas(request);
+
+        var prestador = buscarPrestadorPorIdOuFalhar(principal.getId());
+        validarSenha(request, prestador);
+
+        prestador.setSenha(passwordEncoder.encode(request.getNovaSenha()));
+        prestadorRepository.saveAndFlush(prestador);
+        log.info("Senha do prestador {} atualizada com sucesso", prestador);
+    }
+
+    private void validarSenha(PasswordChangeRequestDTO request, Prestador prestador) {
+        var senhaAtual = prestador.getSenha();
+
+        if (!passwordEncoder.matches(request.getSenhaAtual(), senhaAtual)) {
+            throw new IllegalArgumentException("A senha atual está incorreta");
+        }
+    }
+
+    private void preValidarSenhas(PasswordChangeRequestDTO request) {
+        boolean novaSenhaDiferenteConfirmacao = !request.getNovaSenha().equals(request.getConfirmacaoNovaSenha());
+        boolean novaSenhaIgualAtual = request.getSenhaAtual().equals(request.getNovaSenha());
+
+        if (novaSenhaDiferenteConfirmacao) {
+            throw new IllegalArgumentException("A nova senha e a confirmação não coincidem");
+        }
+
+        if (novaSenhaIgualAtual) {
+            throw new IllegalArgumentException("A nova senha deve ser diferente da senha atual");
+        }
     }
 
     private void sincronizarEspecialidades(Prestador prestador, Set<Especialidade.EspecialidadeEnum> novasEspecialidades) {

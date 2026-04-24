@@ -35,6 +35,12 @@ public class ClienteService {
         return clienteRepository.findById(id);
     }
 
+    @Transactional(readOnly = true)
+    public ClienteDTO buscarPerfilAutenticado(AuthenticatedUserPrincipal principal) {
+        Cliente cliente = buscarClientePorIdOuFalhar(principal.getId());
+        return clienteMapper.map(cliente);
+    }
+
     @Transactional
     public Cliente registrarCliente(Cliente cliente) {
         validarUnicidadeDeEmail(cliente);
@@ -93,11 +99,11 @@ public class ClienteService {
     }
 
     private void preValidarSenhas(PasswordChangeRequestDTO request) {
-        boolean senhaAtualDiferenteConfirmacao = !request.getSenhaAtual().equals(request.getConfirmacaoSenhaAtual());
+        boolean novaSenhaDiferenteConfirmacao = !request.getNovaSenha().equals(request.getConfirmacaoNovaSenha());
         boolean novaSenhaIgualAtual = request.getSenhaAtual().equals(request.getNovaSenha());
 
-        if (senhaAtualDiferenteConfirmacao) {
-            throw new IllegalArgumentException("As senhas atuais não coincidem");
+        if (novaSenhaDiferenteConfirmacao) {
+            throw new IllegalArgumentException("A nova senha e a confirmação não coincidem");
         }
 
         if (novaSenhaIgualAtual) {
