@@ -1,13 +1,18 @@
 package com.aijw.cuidarplus.controller;
 
 import com.aijw.cuidarplus.dto.prestador.PrestadorDTO;
+import com.aijw.cuidarplus.dto.prestador.PrestadorUpdateDTO;
 import com.aijw.cuidarplus.model.Especialidade;
+import com.aijw.cuidarplus.security.AuthenticatedUserPrincipal;
 import com.aijw.cuidarplus.service.PrestadorService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.security.PermitAll;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -25,5 +30,14 @@ public class PrestadorController {
             Pageable pageable
     ) {
         return ResponseEntity.ok(prestadorService.buscarPrestadores(especialidades, pageable));
+    }
+
+    @PutMapping("/me")
+    @PreAuthorize("hasRole('PRESTADOR')")
+    public ResponseEntity<PrestadorDTO> atualizarPrestador(
+            @AuthenticationPrincipal AuthenticatedUserPrincipal principal,
+            @RequestBody PrestadorUpdateDTO prestadorDTO
+    ) {
+        return ResponseEntity.ok(prestadorService.atualizarPrestador(principal, prestadorDTO));
     }
 }

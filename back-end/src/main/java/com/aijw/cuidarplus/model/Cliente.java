@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -27,6 +29,9 @@ public class Cliente {
 
     @Column(nullable = false)
     private String endereco;
+
+    @OneToMany(mappedBy = "contratante", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Servico> servicos;
 
     @JsonIgnore
     @Column(nullable = false)
