@@ -24,7 +24,7 @@ public interface PrestadorRepository extends JpaRepository<Prestador, Long> {
     SELECT p
     FROM Prestador p
     JOIN p.especialidades e
-    WHERE e.especialidade IN :especialidades
+    WHERE (:especialidades IS NULL OR e.especialidade IN :especialidades)
     """)
     Page<Prestador> buscarPrestadoresPorFiltro(
             @Param("especialidades") Set<Especialidade.EspecialidadeEnum> especialidades,
