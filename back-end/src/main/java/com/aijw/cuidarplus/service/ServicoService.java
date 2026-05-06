@@ -1,6 +1,7 @@
 package com.aijw.cuidarplus.service;
 
 import com.aijw.cuidarplus.dto.servico.MaterialServicoCreateDTO;
+import com.aijw.cuidarplus.dto.servico.ProporDataDTO;
 import com.aijw.cuidarplus.dto.servico.ServicoCreateDTO;
 import com.aijw.cuidarplus.dto.servico.ServicoDTO;
 import com.aijw.cuidarplus.dto.servico.ServicoPropostaDTO;
@@ -16,6 +17,7 @@ import com.aijw.cuidarplus.repository.ServicoRepository;
 import com.aijw.cuidarplus.security.AuthenticatedUserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,14 +52,16 @@ public class ServicoService {
         return servico;
     }
 
-
+    @Transactional
     public ServicoDTO aceitarProposta(AuthenticatedUserPrincipal principal, Long servicoId, ServicoPropostaDTO request) {
         var servico = buscarServicoPorIdEStatusOuFalhar(servicoId, Servico.StatusServico.ACEITACAO_PRESTADOR_PENDENTE);
         validarPrestadorDoServico(principal, servico);
 
         List<MaterialServico> materiaisEntityList = criarMateriais(request.getMateriais());
+        materiaisEntityList.forEach(m -> m.setServico(servico));
 
-        servico.setMateriais(materiaisEntityList);
+        servico.getMateriais().clear();
+        servico.getMateriais().addAll(materiaisEntityList);
         servico.setDataHorario(request.getDataHorario());
         servico.setStatus(Servico.StatusServico.ACEITACAO_CLIENTE_PENDENTE);
 
@@ -66,19 +70,51 @@ public class ServicoService {
 
     private List<MaterialServico> criarMateriais(List<MaterialServicoCreateDTO> materiais) {
         var list = new ArrayList<MaterialServico>();
-
+        if (materiais == null) return list;
         for (MaterialServicoCreateDTO dto : materiais) {
-            var material = materialServicoMapper.map(dto);
-
-            list.add(material);
+            list.add(materialServicoMapper.map(dto));
         }
-
         return list;
+    }
+
+    public ServicoDTO negarProposta(AuthenticatedUserPrincipal principal, Long servicoId) {
+        var servico = buscarServicoPorIdEStatusOuFalhar(servicoId, Servico.StatusServico.ACEITACAO_PRESTADOR_PENDENTE);
+        validarPrestadorDoServico(principal, servico);
+        servico.setStatus(Servico.StatusServico.NEGADO);
+        return servicoMapper.map(servicoRepository.saveAndFlush(servico));
+    }
+
+    public ServicoDTO confirmarServico(AuthenticatedUserPrincipal principal, Long servicoId) {
+        var servico = buscarServicoPorIdEStatusOuFalhar(servicoId, Servico.StatusServico.ACEITACAO_CLIENTE_PENDENTE);
+        validarClienteDoServico(principal, servico);
+        servico.setStatus(Servico.StatusServico.ACEITO);
+        return servicoMapper.map(servicoRepository.saveAndFlush(servico));
+    }
+
+    public ServicoDTO recusarServico(AuthenticatedUserPrincipal principal, Long servicoId) {
+        var servico = buscarServicoPorIdEStatusOuFalhar(servicoId, Servico.StatusServico.ACEITACAO_CLIENTE_PENDENTE);
+        validarClienteDoServico(principal, servico);
+        servico.setStatus(Servico.StatusServico.NEGADO);
+        return servicoMapper.map(servicoRepository.saveAndFlush(servico));
+    }
+
+    public ServicoDTO proporData(AuthenticatedUserPrincipal principal, Long servicoId, ProporDataDTO request) {
+        var servico = buscarServicoPorIdEStatusOuFalhar(servicoId, Servico.StatusServico.ACEITACAO_CLIENTE_PENDENTE);
+        validarClienteDoServico(principal, servico);
+        servico.setDataHorario(request.getDataHorario());
+        servico.setStatus(Servico.StatusServico.ACEITACAO_PRESTADOR_PENDENTE);
+        return servicoMapper.map(servicoRepository.saveAndFlush(servico));
     }
 
     private void validarPrestadorDoServico(AuthenticatedUserPrincipal principal, Servico servico) {
         if (!servico.getContratado().getId().equals(principal.getId())) {
-            throw new IllegalArgumentException("Apenas o prestador designado pode aceitar esta proposta");
+            throw new IllegalArgumentException("Apenas o prestador designado pode realizar esta ação");
+        }
+    }
+
+    private void validarClienteDoServico(AuthenticatedUserPrincipal principal, Servico servico) {
+        if (!servico.getContratante().getId().equals(principal.getId())) {
+            throw new IllegalArgumentException("Apenas o cliente contratante pode realizar esta ação");
         }
     }
 

@@ -6,14 +6,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.util.List;
 
 @Getter
 @Setter
-public class ServicoPropostaDTO {
+public class ProporDataDTO {
     @NotNull(message = "A data/horário é obrigatória")
     @Future(message = "A data proposta deve ser futura")
     private Instant dataHorario;
-
-    private List<MaterialServicoCreateDTO> materiais;
 }
