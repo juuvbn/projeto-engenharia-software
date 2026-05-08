@@ -9,7 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -51,7 +51,7 @@ public class Servico {
     private Instant updateTimestamp;
 
     @OneToMany(mappedBy = "servico", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MaterialServico> materiais = Collections.emptyList();
+    private List<MaterialServico> materiais = new ArrayList<>();
 
     public enum StatusServico {
         ACEITACAO_PRESTADOR_PENDENTE,

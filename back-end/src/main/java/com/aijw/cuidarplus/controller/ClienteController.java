@@ -3,15 +3,23 @@ package com.aijw.cuidarplus.controller;
 import com.aijw.cuidarplus.dto.auth.PasswordChangeRequestDTO;
 import com.aijw.cuidarplus.dto.cliente.ClienteDTO;
 import com.aijw.cuidarplus.dto.cliente.ClienteUpdateDTO;
+import com.aijw.cuidarplus.dto.servico.ServicoDTO;
+import com.aijw.cuidarplus.model.Servico;
 import com.aijw.cuidarplus.security.AuthenticatedUserPrincipal;
 import com.aijw.cuidarplus.service.ClienteService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping("/clientes")
@@ -35,6 +43,17 @@ public class ClienteController {
             @RequestBody @Valid ClienteUpdateDTO request
     ) {
         return ResponseEntity.ok(clienteService.atualizarCliente(principal, request));
+    }
+
+    @GetMapping("/me/servicos")
+    @PreAuthorize("hasRole('CLIENTE')")
+    public ResponseEntity<Page<ServicoDTO>> listarServicosDoCliente(
+            @AuthenticationPrincipal AuthenticatedUserPrincipal principal,
+            @RequestParam(required = false) String busca,
+            @RequestParam(name = "status", required = false) Set<Servico.StatusServico> statusSet,
+            @PageableDefault(sort = {"updateTimestamp"}, direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(clienteService.listarServicosDoCliente(principal, busca, statusSet, pageable));
     }
 
     @PatchMapping("/me/senha")

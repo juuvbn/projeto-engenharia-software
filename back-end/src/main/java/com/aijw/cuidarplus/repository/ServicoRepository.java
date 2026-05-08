@@ -1,5 +1,6 @@
 package com.aijw.cuidarplus.repository;
 
+import com.aijw.cuidarplus.model.Cliente;
 import com.aijw.cuidarplus.model.Prestador;
 import com.aijw.cuidarplus.model.Servico;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,24 @@ import java.util.Set;
 @Repository
 public interface ServicoRepository extends JpaRepository<Servico, Long> {
     Optional<Servico> findByIdAndStatusEquals(Long id, Servico.StatusServico status);
+
+    @Query("""
+    SELECT s FROM Servico s
+    WHERE
+        (:cliente IS NULL OR s.contratante = :cliente)
+        AND (
+            (:busca IS NULL OR LOWER(s.descricao) LIKE LOWER(CONCAT('%', :busca, '%')))
+            OR (:busca IS NULL OR LOWER(s.contratado.nome) LIKE LOWER(CONCAT('%', :busca, '%')))
+            OR (:busca IS NULL OR LOWER(s.contratado.email) LIKE LOWER(CONCAT('%', :busca, '%')))
+        )
+        AND (:status IS NULL OR s.status IN :status)
+    """)
+    Page<Servico> buscarServicosPorCliente(
+            @Param("cliente") Cliente cliente,
+            @Param("busca") String busca,
+            @Param("status") Set<Servico.StatusServico> status,
+            Pageable pageable
+    );
 
     @Query("""
     SELECT s

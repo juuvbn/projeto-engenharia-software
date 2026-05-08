@@ -3,26 +3,34 @@ package com.aijw.cuidarplus.service;
 import com.aijw.cuidarplus.dto.auth.PasswordChangeRequestDTO;
 import com.aijw.cuidarplus.dto.cliente.ClienteDTO;
 import com.aijw.cuidarplus.dto.cliente.ClienteUpdateDTO;
+import com.aijw.cuidarplus.dto.servico.ServicoDTO;
 import com.aijw.cuidarplus.mapper.ClienteMapper;
+import com.aijw.cuidarplus.mapper.ServicoMapper;
 import com.aijw.cuidarplus.model.Cliente;
+import com.aijw.cuidarplus.model.Servico;
 import com.aijw.cuidarplus.repository.ClienteRepository;
+import com.aijw.cuidarplus.repository.ServicoRepository;
 import com.aijw.cuidarplus.security.AuthenticatedUserPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class ClienteService {
     private final ClienteRepository clienteRepository;
+    private final ServicoRepository servicoRepository;
     private final ClienteMapper clienteMapper;
-
+    private final ServicoMapper servicoMapper;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
@@ -62,6 +70,18 @@ public class ClienteService {
         log.info("Cliente {} atualizado com sucesso", salvo);
 
         return clienteMapper.map(salvo);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ServicoDTO> listarServicosDoCliente(
+            AuthenticatedUserPrincipal principal,
+            String busca,
+            Set<Servico.StatusServico> statusSet,
+            Pageable pageable
+    ) {
+        var cliente = buscarClientePorIdOuFalhar(principal.getId());
+        return servicoRepository.buscarServicosPorCliente(cliente, busca, statusSet, pageable)
+                .map(servicoMapper::map);
     }
 
     public void atualizarSenha(final AuthenticatedUserPrincipal principal, final PasswordChangeRequestDTO request) {

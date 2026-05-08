@@ -23,6 +23,10 @@ public class ServicoDTO {
 
     private Instant dataHorario;
 
+    private Instant creationTimestamp;
+
+    private Instant updateTimestamp;
+
     private BigDecimal valor;
 
     private Servico.StatusServico status;

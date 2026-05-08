@@ -71,7 +71,7 @@ public class PrestadorController {
             @AuthenticationPrincipal AuthenticatedUserPrincipal principal,
             @RequestParam(required = false) String busca,
             @RequestParam(name = "status", required = false) Set<Servico.StatusServico> statusSet,
-            @PageableDefault(sort = { "dataHorario", "status" }, direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(sort = {"updateTimestamp"}, direction = Sort.Direction.DESC) Pageable pageable
     ) {
         return ResponseEntity.ok(prestadorService.listarServicosDoPrestador(principal, busca, statusSet, pageable));
     }
