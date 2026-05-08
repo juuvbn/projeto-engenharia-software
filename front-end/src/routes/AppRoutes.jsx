@@ -14,6 +14,7 @@ import MeusServicos from '../pages/MeusServicos'
 import Perfil from '../pages/Perfil'
 import EditarPerfil from '../pages/EditarPerfil'
 import AlterarSenha from '../pages/AlterarSenha'
+import ConfirmarServico from '../pages/ConfirmarServico'
 
 function AppRoutes() {
   return (
@@ -34,6 +35,7 @@ function AppRoutes() {
       <Route path="/perfil" element={<Perfil />} />
       <Route path="/perfil/editar" element={<EditarPerfil />} />
       <Route path="/perfil/senha" element={<AlterarSenha />} />
+      <Route path="/meus-servicos/:id/confirmar" element={<ConfirmarServico />} />
     </Routes>
   )
 }

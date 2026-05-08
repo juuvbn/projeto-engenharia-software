@@ -70,7 +70,7 @@ function Perfil() {
     return <Navigate to="/login" replace />
   }
 
-  const tipoLabel = profile?.tipoUsuario === 'PRESTADOR' ? 'Prestador' : 'Cliente'
+  const tipoLabel = isPrestador ? 'Prestador' : 'Cliente'
   const especialidades = profile?.especialidades || []
 
   return (
@@ -136,7 +136,7 @@ function Perfil() {
                 <ShieldCheck className="mt-0.5 h-4 w-4 text-gray-500" />
                 <div>
                   <p className="font-medium text-slate-900">Tipo de usuário</p>
-                  <p className="text-gray-600">{profile?.tipoUsuario}</p>
+                  <p className="text-gray-600">{user?.tipoUsuario}</p>
                 </div>
               </div>
 

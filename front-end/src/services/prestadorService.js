@@ -1,5 +1,14 @@
 import { apiRequest } from './api'
 
+export function listarServicosDoPrestador({ busca, status, page = 0, size = 20 } = {}) {
+  const params = new URLSearchParams()
+  if (busca) params.append('busca', busca)
+  if (status?.length) status.forEach(s => params.append('status', s))
+  params.append('page', String(page))
+  params.append('size', String(size))
+  return apiRequest(`/prestadores/me/servicos?${params.toString()}`, { method: 'GET' })
+}
+
 export async function listarPrestadores({ especialidades = [], page = 0, size = 12 } = {}) {
   const params = new URLSearchParams()
 
