@@ -102,8 +102,6 @@ function SelecionarProfissional() {
         <aside className="rounded-3xl bg-white p-6 shadow-sm">
           <h2 className="text-2xl font-bold text-slate-900">Prestador selecionado</h2>
           <p className="mt-4 text-lg font-semibold text-slate-800">{prestador.nome}</p>
-          <p className="mt-1 text-sm text-gray-500">{prestador.email}</p>
-          <p className="mt-1 text-sm text-gray-500">{prestador.telefone}</p>
 
           <div className="mt-5 flex flex-wrap gap-2">
             {especialidades.map((item) => (

@@ -25,8 +25,6 @@ function ProfissionalCard({
           </p>
         ) : null}
         <h3 className="text-xl font-bold text-slate-900">{prestador.nome}</h3>
-        <p className="mt-1 text-sm text-gray-500">{prestador.email}</p>
-        <p className="mt-1 text-sm text-gray-500">{prestador.telefone}</p>
       </div>
 
       <div className="mb-6 flex flex-wrap gap-2">

@@ -74,7 +74,13 @@ function toDatetimeLocal(instant) {
 
 export default function MeusServicos() {
   const navigate = useNavigate()
-  const { isCliente, isPrestador } = useAuth()
+  const { isCliente, isPrestador, isAuthenticated } = useAuth()
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login')
+    }
+  }, [isAuthenticated, navigate])
   const [servicos, setServicos] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -281,6 +287,26 @@ export default function MeusServicos() {
                         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl text-sm">
                           <MapPin size={15} className="text-[#1a3a32] flex-shrink-0" />
                           <span className="text-gray-800">{selected.contratante?.endereco ?? '—'}</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {isCliente && selected.status === 'ACEITO' && (
+                    <div className="mb-6">
+                      <h3 className="text-sm font-semibold text-gray-700 mb-3">Dados de contato do prestador</h3>
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl text-sm">
+                          <Phone size={15} className="text-[#1a3a32] flex-shrink-0" />
+                          <span className="text-gray-800">{selected.contratado?.telefone ?? '—'}</span>
+                        </div>
+                        <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl text-sm">
+                          <Mail size={15} className="text-[#1a3a32] flex-shrink-0" />
+                          <span className="text-gray-800">{selected.contratado?.email ?? '—'}</span>
+                        </div>
+                        <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl text-sm">
+                          <MapPin size={15} className="text-[#1a3a32] flex-shrink-0" />
+                          <span className="text-gray-800">{selected.contratado?.endereco ?? '—'}</span>
                         </div>
                       </div>
                     </div>
