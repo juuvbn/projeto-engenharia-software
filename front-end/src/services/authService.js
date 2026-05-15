@@ -67,3 +67,17 @@ export function getPrestadorProfile() {
     method: 'GET',
   })
 }
+
+export function solicitarRecuperacaoSenha(payload) {
+  return apiRequest('/auth/recuperar-senha', {
+    method: 'POST',
+    body: payload,
+  })
+}
+
+export function redefinirSenha(payload) {
+  return apiRequest('/auth/redefinir-senha', {
+    method: 'POST',
+    body: payload,
+  })
+}
